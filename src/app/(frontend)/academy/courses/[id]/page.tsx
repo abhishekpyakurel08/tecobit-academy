@@ -2,13 +2,22 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ArrowLeft, Clock, BarChart2, Calendar, Users, CheckCircle2, ImageIcon, BookOpen } from 'lucide-react'
-import { getCourseBySlug, getBatches, getLecturers } from '@/utilities/academy-data'
+import { getPayload } from 'payload'
+import config from '@payload-config'
+import Image from 'next/image'
 
 type Props = { params: Promise<{ id: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params
-  const course = await getCourseBySlug(id)
+  const payload = await getPayload({ config })
+  
+  const course = await payload.findByID({
+    collection: 'courses',
+    id,
+    depth: 2, // Populate related data
+  })
+  
   if (!course) return { title: 'Course Not Found' }
   return {
     title: `${course.title} | Tecobit Academy`,
@@ -18,18 +27,33 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CourseDetailPage({ params }: Props) {
   const { id } = await params
-  const [course, allBatches, allLecturers] = await Promise.all([
-    getCourseBySlug(id),
-    getBatches(id),
-    getLecturers(),
+  const payload = await getPayload({ config })
+  
+  const [course, batches, lecturers] = await Promise.all([
+    payload.findByID({
+      collection: 'courses',
+      id,
+      depth: 2,
+    }),
+    payload.find({
+      collection: 'batches',
+      where: {
+        and: [
+          { course: { equals: id } }
+        ]
+      },
+    }),
+    payload.find({
+      collection: 'lecturers',
+    }),
   ])
 
   if (!course) return notFound()
 
-  const courseLecturers = allLecturers.filter((l) =>
+  const courseLecturers = lecturers.docs.filter((l) =>
     Array.isArray(l.courses) && l.courses.some((c: any) => (typeof c === 'object' ? c.id : c) === id),
   )
-  const openBatches = allBatches.filter((b) => b.status === 'open')
+  const openBatches = batches.docs.filter((b) => b.status === 'open')
 
   const trackName = typeof course.track === 'object' ? course.track?.name : ''
   const imageUrl = typeof course.image === 'object' && course.image?.url ? course.image.url : null
@@ -63,7 +87,7 @@ export default async function CourseDetailPage({ params }: Props) {
           {/* Course Image */}
           {imageUrl && (
             <div className="overflow-hidden rounded-2xl border border-border aspect-video">
-              <img src={imageUrl} alt={course.title} className="h-full w-full object-cover" />
+              <Image src={imageUrl} alt={course.title} width={800} height={450} className="h-full w-full object-cover" />
             </div>
           )}
 
@@ -107,36 +131,6 @@ export default async function CourseDetailPage({ params }: Props) {
                     </div>
                   </div>
                 ))}
-              </div>
-            </div>
-          )}
-
-          {/* Lecturers */}
-          {courseLecturers.length > 0 && (
-            <div>
-              <h2 className="text-xl font-black mb-6">Your Instructors</h2>
-              <div className="grid gap-4 sm:grid-cols-2">
-                {courseLecturers.map((lecturer) => {
-                  const photoUrl = typeof lecturer.photo === 'object' && lecturer.photo?.url ? lecturer.photo.url : null
-                  return (
-                    <div key={lecturer.id} className="flex items-center gap-4 rounded-xl border border-border bg-card p-4">
-                      <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-primary/10 overflow-hidden">
-                        {photoUrl ? (
-                          <img src={photoUrl} alt={lecturer.name} className="h-full w-full object-cover" />
-                        ) : (
-                          <span className="text-xl font-black text-primary">
-                            {lecturer.name.split(' ').map((n: string) => n[0]).join('').slice(0, 2)}
-                          </span>
-                        )}
-                      </div>
-                      <div>
-                        <p className="font-bold text-foreground">{lecturer.name}</p>
-                        <p className="text-xs text-primary font-semibold">{lecturer.role}</p>
-                        <p className="text-xs text-muted-foreground mt-0.5">{lecturer.experience}</p>
-                      </div>
-                    </div>
-                  )
-                })}
               </div>
             </div>
           )}

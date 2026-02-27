@@ -9,6 +9,7 @@ import { imageHero1 } from './image-hero-1'
 import { post1 } from './post-1'
 import { post2 } from './post-2'
 import { post3 } from './post-3'
+import { seedAcademyData } from '../../seed/academyData'
 
 const collections: CollectionSlug[] = [
   'categories',
@@ -18,9 +19,17 @@ const collections: CollectionSlug[] = [
   'forms',
   'form-submissions',
   'search',
+  // Academy collections
+  'tracks',
+  'courses',
+  'batches',
+  'lecturers',
+  'events',
+  'testimonials',
+  'applications',
 ]
 
-const globals: GlobalSlug[] = ['header', 'footer']
+const globals: GlobalSlug[] = ['header', 'footer', 'settings']
 
 const categories = ['Technology', 'News', 'Finance', 'Design', 'Software', 'Engineering']
 
@@ -273,6 +282,10 @@ export const seed = async ({
   ])
 
   payload.logger.info('Seeded database successfully!')
+
+  // Seed academy data
+  payload.logger.info(`— Seeding academy data...`)
+  await seedAcademyData(payload)
 }
 
 async function fetchFileByURL(url: string): Promise<File> {

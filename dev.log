@@ -1,0 +1,60 @@
+
+> tecobit-academy@1.0.0 dev /home/socialworker/tecobit-acdemy/tecobit-academy
+> cross-env NODE_OPTIONS=--no-deprecation next dev
+
+   ▲ Next.js 15.4.11
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.1.174:3000
+   - Environments: .env
+
+ ✓ Starting...
+ ✓ Ready in 1424ms
+ ○ Compiling /academy/courses/[id] ...
+ ✓ Compiled /academy/courses/[id] in 4.9s (1183 modules)
+[17:32:29] [33mWARN[39m: [36mNo email adapter provided. Email will be written to console. More info at https://payloadcms.com/docs/email/overview.[39m
+ ⨯ NotFound: Not Found
+    at async CourseDetailPage (src/app/(frontend)/academy/courses/[id]/page.tsx:32:39)
+  30 |   const payload = await getPayload({ config })
+  31 |   
+> 32 |   const [course, batches, lecturers] = await Promise.all([
+     |                                       ^
+  33 |     payload.findByID({
+  34 |       collection: 'courses',
+  35 |       id, {
+  data: null,
+  isOperational: true,
+  isPublic: true,
+  status: 404,
+  digest: '3198585824',
+  [cause]: null
+}
+ GET /academy/courses/python-fundamentals 500 in 9776ms
+ GET /academy/courses/69a180a8b501dedab8becfaf 200 in 5600ms
+ ○ Compiling / ...
+ ✓ Compiled /api/[...slug] in 6.8s (5086 modules)
+Generating import map
+No new imports found, skipping writing import map
+ GET /api/users/me 200 in 6768ms
+ GET / 200 in 1772ms
+ GET / 200 in 1024ms
+ GET / 200 in 1715ms
+ GET / 200 in 9027ms
+ ○ Compiling /[slug] ...
+ ✓ Compiled /[slug] in 2.2s (5466 modules)
+ GET /api/users/me 200 in 144ms
+[17:32:44] [33mWARN[39m: [36mNo email adapter provided. Email will be written to console. More info at https://payloadcms.com/docs/email/overview.[39m
+ GET /grid.svg 404 in 4823ms
+[17:32:47] [33mWARN[39m: [36mNo email adapter provided. Email will be written to console. More info at https://payloadcms.com/docs/email/overview.[39m
+ ○ Compiling /academy/courses ...
+ ✓ Compiled /academy/courses in 931ms (5462 modules)
+ ○ Compiling /_not-found ...
+ GET /academy/courses?track=69a180a7b501dedab8becf9e 200 in 2019ms
+ ✓ Compiled /_not-found in 2s (5468 modules)
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ GET /_next/static/webpack/69c8d7941626a8af.webpack.hot-update.json 404 in 2348ms
+ GET /academy/courses?track=69a180a7b501dedab8becf9e 200 in 271ms
+ GET /_next/static/css/app/(frontend)/layout.css?v=1772192924575 404 in 21ms
+ GET /_next/static/chunks/main-app.js?v=1772192924575 404 in 30ms
+ GET /_next/static/chunks/app/(frontend)/not-found.js 404 in 67ms
+ GET /_next/static/chunks/app/(frontend)/layout.js 404 in 80ms
+ GET /_next/static/chunks/app-pages-internals.js 404 in 81ms
