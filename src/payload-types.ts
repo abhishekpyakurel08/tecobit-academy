@@ -72,6 +72,13 @@ export interface Config {
     media: Media;
     categories: Category;
     users: User;
+    tracks: Track;
+    courses: Course;
+    batches: Batch;
+    lecturers: Lecturer;
+    events: Event;
+    testimonials: Testimonial;
+    applications: Application;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -94,6 +101,13 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    tracks: TracksSelect<false> | TracksSelect<true>;
+    courses: CoursesSelect<false> | CoursesSelect<true>;
+    batches: BatchesSelect<false> | BatchesSelect<true>;
+    lecturers: LecturersSelect<false> | LecturersSelect<true>;
+    events: EventsSelect<false> | EventsSelect<true>;
+    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
+    applications: ApplicationsSelect<false> | ApplicationsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -112,10 +126,12 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    settings: Setting;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    settings: SettingsSelect<false> | SettingsSelect<true>;
   };
   locale: null;
   user: User;
@@ -780,6 +796,148 @@ export interface Form {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tracks".
+ */
+export interface Track {
+  id: string;
+  name: string;
+  description: string;
+  icon: string;
+  courseCount: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "courses".
+ */
+export interface Course {
+  id: string;
+  title: string;
+  description: string;
+  fullDescription: string;
+  track: string | Track;
+  trackName: string;
+  image?: (string | null) | Media;
+  duration: string;
+  level: 'Beginner' | 'Intermediate' | 'Advanced';
+  /**
+   * Course price in USD (0 = free)
+   */
+  price?: number | null;
+  featured?: boolean | null;
+  syllabus?:
+    | {
+        title: string;
+        description: string;
+        lessons?:
+          | {
+              topic: string;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "batches".
+ */
+export interface Batch {
+  id: string;
+  name: string;
+  course: string | Course;
+  startDate: string;
+  maxSeats: number;
+  seatsRemaining: number;
+  status: 'open' | 'closed';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lecturers".
+ */
+export interface Lecturer {
+  id: string;
+  name: string;
+  role: string;
+  experience: string;
+  photo?: (string | null) | Media;
+  courses?: (string | Course)[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events".
+ */
+export interface Event {
+  id: string;
+  title: string;
+  date: string;
+  /**
+   * e.g. 10:00 AM – 12:00 PM
+   */
+  time?: string | null;
+  description: string;
+  location: string;
+  type?: ('workshop' | 'webinar' | 'hackathon' | 'meetup') | null;
+  image?: (string | null) | Media;
+  course?: (string | null) | Course;
+  link?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: string;
+  studentName: string;
+  rating: number;
+  content: string;
+  image?: (string | null) | Media;
+  /**
+   * e.g. ML Engineer at Google
+   */
+  currentPosition?: string | null;
+  /**
+   * Year the student graduated
+   */
+  graduationYear?: number | null;
+  course?: (string | null) | Course;
+  featured?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "applications".
+ */
+export interface Application {
+  id: string;
+  fullName: string;
+  email: string;
+  phone: string;
+  educationLevel: 'high-school' | 'bachelor' | 'master' | 'phd' | 'other';
+  college?: string | null;
+  course: string | Course;
+  batch?: (string | null) | Batch;
+  status: 'pending' | 'approved' | 'rejected';
+  /**
+   * Internal admin notes
+   */
+  notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -987,6 +1145,34 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: string | User;
+      } | null)
+    | ({
+        relationTo: 'tracks';
+        value: string | Track;
+      } | null)
+    | ({
+        relationTo: 'courses';
+        value: string | Course;
+      } | null)
+    | ({
+        relationTo: 'batches';
+        value: string | Batch;
+      } | null)
+    | ({
+        relationTo: 'lecturers';
+        value: string | Lecturer;
+      } | null)
+    | ({
+        relationTo: 'events';
+        value: string | Event;
+      } | null)
+    | ({
+        relationTo: 'testimonials';
+        value: string | Testimonial;
+      } | null)
+    | ({
+        relationTo: 'applications';
+        value: string | Application;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1355,6 +1541,126 @@ export interface UsersSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tracks_select".
+ */
+export interface TracksSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  icon?: T;
+  courseCount?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "courses_select".
+ */
+export interface CoursesSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  fullDescription?: T;
+  track?: T;
+  trackName?: T;
+  image?: T;
+  duration?: T;
+  level?: T;
+  price?: T;
+  featured?: T;
+  syllabus?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        lessons?:
+          | T
+          | {
+              topic?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "batches_select".
+ */
+export interface BatchesSelect<T extends boolean = true> {
+  name?: T;
+  course?: T;
+  startDate?: T;
+  maxSeats?: T;
+  seatsRemaining?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "lecturers_select".
+ */
+export interface LecturersSelect<T extends boolean = true> {
+  name?: T;
+  role?: T;
+  experience?: T;
+  photo?: T;
+  courses?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "events_select".
+ */
+export interface EventsSelect<T extends boolean = true> {
+  title?: T;
+  date?: T;
+  time?: T;
+  description?: T;
+  location?: T;
+  type?: T;
+  image?: T;
+  course?: T;
+  link?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials_select".
+ */
+export interface TestimonialsSelect<T extends boolean = true> {
+  studentName?: T;
+  rating?: T;
+  content?: T;
+  image?: T;
+  currentPosition?: T;
+  graduationYear?: T;
+  course?: T;
+  featured?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "applications_select".
+ */
+export interface ApplicationsSelect<T extends boolean = true> {
+  fullName?: T;
+  email?: T;
+  phone?: T;
+  educationLevel?: T;
+  college?: T;
+  course?: T;
+  batch?: T;
+  status?: T;
+  notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects_select".
  */
 export interface RedirectsSelect<T extends boolean = true> {
@@ -1634,6 +1940,11 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Header {
   id: string;
+  topBar?: {
+    email?: string | null;
+    phone?: string | null;
+    address?: string | null;
+  };
   navItems?:
     | {
         link: {
@@ -1663,6 +1974,10 @@ export interface Header {
  */
 export interface Footer {
   id: string;
+  slogan: string;
+  phone: string;
+  email: string;
+  address: string;
   navItems?:
     | {
         link: {
@@ -1683,6 +1998,60 @@ export interface Footer {
         id?: string | null;
       }[]
     | null;
+  admissionButton: {
+    label?: string | null;
+    link: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?:
+        | ({
+            relationTo: 'pages';
+            value: string | Page;
+          } | null)
+        | ({
+            relationTo: 'posts';
+            value: string | Post;
+          } | null);
+      url?: string | null;
+      label: string;
+    };
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "settings".
+ */
+export interface Setting {
+  id: string;
+  siteName: string;
+  heroAdmissionText: string;
+  heroEngineeringText: string;
+  heroDescription: string;
+  stats?:
+    | {
+        label: string;
+        value: string;
+        iconType?: ('Users' | 'BookOpen' | 'Award' | 'Globe') | null;
+        id?: string | null;
+      }[]
+    | null;
+  socialLinks?:
+    | {
+        platform?: ('facebook' | 'linkedin' | 'instagram' | 'twitter' | 'youtube') | null;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  whyFeatures?:
+    | {
+        title: string;
+        description: string;
+        iconType?: ('Rocket' | 'ShieldCheck' | 'Users' | 'Zap') | null;
+        id?: string | null;
+      }[]
+    | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1691,6 +2060,13 @@ export interface Footer {
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
+  topBar?:
+    | T
+    | {
+        email?: T;
+        phone?: T;
+        address?: T;
+      };
   navItems?:
     | T
     | {
@@ -1714,6 +2090,10 @@ export interface HeaderSelect<T extends boolean = true> {
  * via the `definition` "footer_select".
  */
 export interface FooterSelect<T extends boolean = true> {
+  slogan?: T;
+  phone?: T;
+  email?: T;
+  address?: T;
   navItems?:
     | T
     | {
@@ -1726,6 +2106,56 @@ export interface FooterSelect<T extends boolean = true> {
               url?: T;
               label?: T;
             };
+        id?: T;
+      };
+  admissionButton?:
+    | T
+    | {
+        label?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+            };
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "settings_select".
+ */
+export interface SettingsSelect<T extends boolean = true> {
+  siteName?: T;
+  heroAdmissionText?: T;
+  heroEngineeringText?: T;
+  heroDescription?: T;
+  stats?:
+    | T
+    | {
+        label?: T;
+        value?: T;
+        iconType?: T;
+        id?: T;
+      };
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
+  whyFeatures?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        iconType?: T;
         id?: T;
       };
   updatedAt?: T;

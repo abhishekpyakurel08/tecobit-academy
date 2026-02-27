@@ -10,6 +10,30 @@ export const Footer: GlobalConfig = {
   },
   fields: [
     {
+      name: 'slogan',
+      type: 'text',
+      required: true,
+      defaultValue: 'Empowering the next generation of tech leaders with world-class education.',
+    },
+    {
+      name: 'phone',
+      type: 'text',
+      required: true,
+      defaultValue: '+977 1234567890',
+    },
+    {
+      name: 'email',
+      type: 'text',
+      required: true,
+      defaultValue: 'info@tecobit.com',
+    },
+    {
+      name: 'address',
+      type: 'text',
+      required: true,
+      defaultValue: 'Kathmandu, Nepal',
+    },
+    {
       name: 'navItems',
       type: 'array',
       fields: [
@@ -24,6 +48,20 @@ export const Footer: GlobalConfig = {
           RowLabel: '@/Footer/RowLabel#RowLabel',
         },
       },
+    },
+    {
+      name: 'admissionButton',
+      type: 'group',
+      fields: [
+        {
+          name: 'label',
+          type: 'text',
+          defaultValue: 'Online Admission',
+        },
+        link({
+          appearances: false,
+        }),
+      ],
     },
   ],
   hooks: {

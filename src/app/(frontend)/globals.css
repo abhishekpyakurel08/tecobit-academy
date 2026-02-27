@@ -3,7 +3,11 @@
 
 @config '../../../tailwind.config.mjs';
 
-@custom-variant dark (&:is([data-theme='dark'] *));
+/* ── Dark mode: data-theme attribute on <html> drives dark styles ──────────
+   Tailwind's `dark:` variant is wired to this selector via @custom-variant.
+   The InitTheme script sets data-theme synchronously before React, so no flash.
+   ─────────────────────────────────────────────────────────────────────────── */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
 @custom-variant sm (@media (width >= theme(--breakpoint-sm)));
 @custom-variant md (@media (width >= theme(--breakpoint-md)));
 @custom-variant lg (@media (width >= theme(--breakpoint-lg)));
@@ -43,8 +47,11 @@
   --breakpoint-lg: 64rem;
   --breakpoint-xl: 80rem;
   --breakpoint-2xl: 86rem;
-  --font-mono: var(--font-geist-mono);
-  --font-sans: var(--font-geist-sans);
+
+  /* ── Font stacks ── */
+  /* Inter (loaded via next/font) takes priority; Geist & system fonts follow */
+  --font-sans: var(--font-inter), Inter, var(--font-geist-sans), Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
 @layer utilities {
@@ -87,80 +94,111 @@
 }
 
 :root {
-  --background: oklch(100% 0 0deg);
-  --foreground: oklch(14.5% 0 0deg);
-  --card: oklch(96.5% 0.005 265deg);
-  --card-foreground: oklch(14.5% 0 0deg);
-  --popover: oklch(100% 0 0deg);
-  --popover-foreground: oklch(14.5% 0 0deg);
-  --primary: oklch(20.5% 0 0deg);
-  --primary-foreground: oklch(98.5% 0 0deg);
-  --secondary: oklch(97% 0 0deg);
-  --secondary-foreground: oklch(20.5% 0 0deg);
-  --muted: oklch(97% 0 0deg);
-  --muted-foreground: oklch(55.6% 0 0deg);
-  --accent: oklch(97% 0 0deg);
-  --accent-foreground: oklch(20.5% 0 0deg);
-  --destructive: oklch(57.7% 0.245 27.325deg);
-  --destructive-foreground: oklch(57.7% 0.245 27.325deg);
-  --border: oklch(92.2% 0 0deg);
-  --input: oklch(92.2% 0 0deg);
-  --ring: oklch(70.8% 0 0deg);
-  --chart-1: oklch(64.6% 0.222 41.116deg);
-  --chart-2: oklch(60% 0.118 184.704deg);
-  --chart-3: oklch(39.8% 0.07 227.392deg);
-  --chart-4: oklch(82.8% 0.189 84.429deg);
-  --chart-5: oklch(76.9% 0.188 70.08deg);
-  --radius: 0.625rem;
-  --sidebar: oklch(98.5% 0 0deg);
-  --sidebar-foreground: oklch(14.5% 0 0deg);
-  --sidebar-primary: oklch(20.5% 0 0deg);
-  --sidebar-primary-foreground: oklch(98.5% 0 0deg);
-  --sidebar-accent: oklch(97% 0 0deg);
-  --sidebar-accent-foreground: oklch(20.5% 0 0deg);
-  --sidebar-border: oklch(92.2% 0 0deg);
-  --sidebar-ring: oklch(70.8% 0 0deg);
-  --success: oklch(78% 0.08 200deg);
-  --warning: oklch(89% 0.1 75deg);
-  --error: oklch(75% 0.15 25deg);
+  /* ══════════════════════════════════════════════════
+   * Typography – Modular Scale (ratio 1.25)
+   * ══════════════════════════════════════════════════ */
+  --font-xs:   0.75rem;    /* 12px – micro labels, timestamps */
+  --font-sm:   0.875rem;   /* 14px – captions, badges, helper text */
+  --font-base: 1rem;       /* 16px – base body copy */
+  --font-lg:   1.125rem;   /* 18px – lead text, large body */
+  --font-xl:   1.25rem;    /* 20px – card titles */
+  --font-2xl:  1.5rem;     /* 24px – sub-section headers */
+  --font-3xl:  1.875rem;   /* 30px – page sub-headlines */
+  --font-4xl:  2.25rem;    /* 36px – section headlines */
+  --font-5xl:  3rem;       /* 48px – display headlines */
+  --font-6xl:  3.75rem;    /* 60px – hero headlines */
+  --font-7xl:  4.5rem;     /* 72px – jumbo / impact */
+  --font-8xl:  6rem;       /* 96px – ultra-large display */
+  --font-9xl:  8rem;       /* 128px – maximum impact */
+
+  /* Line heights paired with the scale */
+  --leading-tight:   1.1;
+  --leading-snug:    1.25;
+  --leading-normal:  1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose:   1.8;
+
+  /* Letter-spacing presets */
+  --tracking-tightest: -0.05em;
+  --tracking-tight:    -0.025em;
+  --tracking-normal:    0em;
+  --tracking-wide:      0.025em;
+  --tracking-wider:     0.05em;
+  --tracking-widest:    0.1em;
+  --tracking-ultra:     0.2em;
+
+  /* ── Colour tokens ──────────────────────────────── */
+  /* ── Brand colours ── */
+  --background: oklch(99%   0.003 260);
+  --foreground: oklch(14%   0.025 260);
+
+  --card:             oklch(100%  0     0);
+  --card-foreground:  oklch(14%   0.025 260);
+
+  --popover:            oklch(100%  0     0);
+  --popover-foreground: oklch(14%   0.025 260);
+
+  /* Primary = #5173ff – electric indigo */
+  --primary:            oklch(53%   0.20  260);
+  --primary-foreground: oklch(100%  0     0);
+
+  --secondary:            oklch(95%   0.015 260);
+  --secondary-foreground: oklch(25%   0.08  260);
+
+  --muted:            oklch(96%   0.008 260);
+  --muted-foreground: oklch(52%   0.04  260);
+
+  /* Accent = vibrant coral */
+  --accent:            oklch(60%   0.20  20);
+  --accent-foreground: oklch(100%  0     0);
+
+  --destructive:            oklch(58%   0.20  25);
+  --destructive-foreground: oklch(99%   0.005 25);
+
+  --border: oklch(88%   0.015 260);
+  --input:  oklch(92%   0.01  260);
+  --ring:   oklch(53%   0.20  260);
+
+  --radius: 1rem;
+
+  --success: oklch(58%   0.16  150);
+  --warning: oklch(72%   0.14  70);
+  --error:   oklch(58%   0.20  25);
 }
 
 [data-theme='dark'] {
-  --background: oklch(14.5% 0 0deg);
-  --foreground: oklch(98.5% 0 0deg);
-  --card: oklch(17% 0 0deg);
-  --card-foreground: oklch(98.5% 0 0deg);
-  --popover: oklch(14.5% 0 0deg);
-  --popover-foreground: oklch(98.5% 0 0deg);
-  --primary: oklch(98.5% 0 0deg);
-  --primary-foreground: oklch(20.5% 0 0deg);
-  --secondary: oklch(26.9% 0 0deg);
-  --secondary-foreground: oklch(98.5% 0 0deg);
-  --muted: oklch(26.9% 0 0deg);
-  --muted-foreground: oklch(70.8% 0 0deg);
-  --accent: oklch(26.9% 0 0deg);
-  --accent-foreground: oklch(98.5% 0 0deg);
-  --destructive: oklch(39.6% 0.141 25.723deg);
-  --destructive-foreground: oklch(63.7% 0.237 25.331deg);
-  --border: oklch(26.9% 0 0deg);
-  --input: oklch(26.9% 0 0deg);
-  --ring: oklch(43.9% 0 0deg);
-  --chart-1: oklch(48.8% 0.243 264.376deg);
-  --chart-2: oklch(69.6% 0.17 162.48deg);
-  --chart-3: oklch(76.9% 0.188 70.08deg);
-  --chart-4: oklch(62.7% 0.265 303.9deg);
-  --chart-5: oklch(64.5% 0.246 16.439deg);
-  --sidebar: oklch(20.5% 0 0deg);
-  --sidebar-foreground: oklch(98.5% 0 0deg);
-  --sidebar-primary: oklch(48.8% 0.243 264.376deg);
-  --sidebar-primary-foreground: oklch(98.5% 0 0deg);
-  --sidebar-accent: oklch(26.9% 0 0deg);
-  --sidebar-accent-foreground: oklch(98.5% 0 0deg);
-  --sidebar-border: oklch(26.9% 0 0deg);
-  --sidebar-ring: oklch(43.9% 0 0deg);
-  --success: oklch(28% 0.1 200deg);
-  --warning: oklch(35% 0.08 70deg);
-  --error: oklch(45% 0.1 25deg);
+  --background: oklch(11%   0.018 260);  /* deep navy-black */
+  --foreground: oklch(96%   0.01  260);  /* near-white */
+
+  --card:            oklch(16%   0.025 260);
+  --card-foreground: oklch(96%   0.01  260);
+
+  --popover:            oklch(13%   0.02  260);
+  --popover-foreground: oklch(96%   0.01  260);
+
+  /* Slightly brighter indigo in dark mode for accessibility */
+  --primary:            oklch(67%   0.18  260);
+  --primary-foreground: oklch(10%   0.02  260);
+
+  --secondary:            oklch(21%   0.03  260);
+  --secondary-foreground: oklch(96%   0.01  260);
+
+  --muted:            oklch(19%   0.03  260);
+  --muted-foreground: oklch(68%   0.04  260);
+
+  --accent:            oklch(72%   0.18  20);
+  --accent-foreground: oklch(12%   0.02  20);
+
+  --destructive:            oklch(55%   0.20  25);
+  --destructive-foreground: oklch(99%   0.005 25);
+
+  --border: oklch(23%   0.03  260);
+  --input:  oklch(23%   0.03  260);
+  --ring:   oklch(67%   0.18  260);
+
+  --success: oklch(42%   0.13  150);
+  --warning: oklch(48%   0.12  70);
+  --error:   oklch(44%   0.16  25);
 }
 
 @theme inline {
@@ -206,19 +244,201 @@
 }
 
 @layer base {
-  * {
+  *, *::before, *::after {
     @apply border-border outline-ring/50;
+    box-sizing: border-box;
   }
+
+  /* ── Body – production typography baseline ─────────────────────────── */
   body {
     @apply bg-background text-foreground min-h-[100vh] flex flex-col;
+    font-family: var(--font-sans);
+    font-size: var(--font-base);
+    line-height: var(--leading-relaxed);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  }
+
+  /* ── Responsive font scaling ──────────────────────────────────────── */
+  @media (min-width: 40rem)  { body { font-size: 1.0625rem; } }
+  @media (min-width: 64rem)  { body { font-size: var(--font-lg); } }
+
+  /* ── Theme-change transitions ─────────────────────────────────────── */
+  /* Only colour properties — exclude transform/opacity so animations aren't
+     accidentally slowed down by the blanket rule. */
+  * {
+    transition-property: background-color, border-color, color, fill, stroke, box-shadow;
+    transition-duration: 0.25s;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  /* Components that need faster transitions can override with Tailwind classes */
+  a, button, [role="button"] {
+    transition-duration: 0.15s;
+  }
+
+  /* ── Custom cursor – hide OS cursor on fine-pointer (mouse) devices ── */
+  @media (pointer: fine) {
+    html, body {
+      cursor: none !important;
+    }
+    a, button, label, select, input[type="submit"],
+    input[type="button"], input[type="reset"],
+    [role="button"], [role="link"], [role="tab"],
+    [role="menuitem"], [role="option"],
+    [tabindex]:not([tabindex="-1"]),
+    .cursor-pointer {
+      cursor: none !important;
+    }
   }
 }
 
+/* ── FOUC guard ──────────────────────────────────────────────────────────────
+   html starts invisible; InitTheme sets data-theme synchronously before paint,
+   so the correct theme is applied before the page becomes visible.
+   This eliminates the Flash of Wrong Theme (FOWT) on hard reload.
+   ─────────────────────────────────────────────────────────────────────────── */
 html {
   opacity: 0;
 }
 
 html[data-theme='dark'],
 html[data-theme='light'] {
-  opacity: initial;
+  opacity: 1;
+  /* Fast fade-in prevents jarring appearance */
+  animation: theme-reveal 0.15s ease forwards;
 }
+
+@keyframes theme-reveal {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Theme-switch transition ─────────────────────────────────────────────────
+   Applied briefly (via JS, optional) when user explicitly changes theme
+   to give a smooth cross-fade. Currently handled via the global * transition
+   in @layer base above.
+   ─────────────────────────────────────────────────────────────────────────── */
+.theme-transitioning,
+.theme-transitioning * {
+  transition:
+    background-color 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color     0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    color            0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    fill             0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    stroke           0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow       0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+
+/* ── Theme-aware utilities ─────────────────────────────────────── */
+@layer utilities {
+  .glass-card {
+    background: oklch(from var(--card) l c h / 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+
+  .card-hover {
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px -8px oklch(0 0 0 / 0.15);
+  }
+
+  /* Theme-aware glass effect */
+  .glass-card-dark {
+    background: oklch(from var(--card) l c h / 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid oklch(from var(--border) l c h / 0.3);
+  }
+
+  [data-theme='dark'] .glass-card-dark {
+    background: oklch(from var(--card) l c h / 0.6);
+    border: 1px solid oklch(from var(--border) l c h / 0.2);
+  }
+
+  /* Enhanced theme transitions */
+  .theme-transition {
+    transition: 
+      background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Theme-aware gradients */
+  .gradient-primary {
+    background: linear-gradient(135deg, var(--primary) 0%, oklch(from var(--primary) l c h / 0.8) 100%);
+  }
+
+  .gradient-accent {
+    background: linear-gradient(135deg, var(--accent) 0%, oklch(from var(--accent) l c h / 0.8) 100%);
+  }
+
+  /* Theme-aware shadows */
+  .shadow-theme {
+    box-shadow: 
+      0 1px 3px 0 oklch(from var(--foreground) l c h / 0.1),
+      0 1px 2px 0 oklch(from var(--foreground) l c h / 0.06);
+  }
+
+  .shadow-theme-lg {
+    box-shadow: 
+      0 10px 15px -3px oklch(from var(--foreground) l c h / 0.1),
+      0 4px 6px -2px oklch(from var(--foreground) l c h / 0.05);
+  }
+
+  [data-theme='dark'] .shadow-theme-lg {
+    box-shadow: 
+      0 10px 15px -3px oklch(0 0 0 / 0.3),
+      0 4px 6px -2px oklch(0 0 0 / 0.2);
+  }
+
+  .level-beginner   { background: hsl(142 76% 90%); color: hsl(142 60% 28%); }
+  .level-intermediate { background: hsl(213 94% 90%); color: hsl(213 80% 28%); }
+  .level-advanced   { background: hsl(270 76% 90%); color: hsl(270 60% 32%); }
+  [data-theme='dark'] .level-beginner   { background: hsl(142 40% 18%); color: hsl(142 60% 60%); }
+  [data-theme='dark'] .level-intermediate { background: hsl(213 60% 18%); color: hsl(213 80% 65%); }
+  [data-theme='dark'] .level-advanced   { background: hsl(270 40% 18%); color: hsl(270 60% 70%); }
+}
+
+/* ── Animations ────────────────────────────────────────────────────── */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.85); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+
+@keyframes gradient-x {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+.animate-fade-in  { animation: fade-in  0.6s ease both; }
+.animate-scale-in { animation: scale-in 0.5s ease both; }
+.animate-float    { animation: float    4s ease-in-out infinite; }
+.animate-gradient-x { animation: gradient-x 15s ease infinite; }
+.animate-shimmer { animation: shimmer 2s infinite; }
+.animate-shake { animation: shake 0.4s ease-in-out; }

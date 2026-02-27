@@ -10,6 +10,27 @@ export const Header: GlobalConfig = {
   },
   fields: [
     {
+      name: 'topBar',
+      type: 'group',
+      fields: [
+        {
+          name: 'email',
+          type: 'text',
+          defaultValue: 'info@tecobit.academy',
+        },
+        {
+          name: 'phone',
+          type: 'text',
+          defaultValue: '+977 (01) 423-4567',
+        },
+        {
+          name: 'address',
+          type: 'text',
+          defaultValue: 'Anamnagar-32, Kathmandu, Nepal',
+        },
+      ],
+    },
+    {
       name: 'navItems',
       type: 'array',
       fields: [

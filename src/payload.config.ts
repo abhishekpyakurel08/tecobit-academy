@@ -9,8 +9,16 @@ import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
+import { Tracks } from './collections/Tracks'
+import { Courses } from './collections/Courses'
+import { Batches } from './collections/Batches'
+import { Lecturers } from './collections/Lecturers'
+import { Events } from './collections/Events'
+import { Testimonials } from './collections/Testimonials'
+import { Applications } from './collections/Applications'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
+import { Settings } from './Settings/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -60,9 +68,22 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URL || '',
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: [
+    Pages,
+    Posts,
+    Media,
+    Categories,
+    Users,
+    Tracks,
+    Courses,
+    Batches,
+    Lecturers,
+    Events,
+    Testimonials,
+    Applications,
+  ],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
+  globals: [Header, Footer, Settings],
   plugins,
   secret: process.env.PAYLOAD_SECRET,
   sharp,

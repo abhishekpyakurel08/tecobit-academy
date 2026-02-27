@@ -1,17 +1,24 @@
-import type { Theme } from './types'
+import type { ResolvedTheme, Theme } from './types'
 
 export const themeLocalStorageKey = 'payload-theme'
 
-export const defaultTheme = 'light'
+/** Default preference when no preference has been saved. */
+export const defaultTheme: Theme = 'system'
 
-export const getImplicitPreference = (): Theme | null => {
-  const mediaQuery = '(prefers-color-scheme: dark)'
-  const mql = window.matchMedia(mediaQuery)
-  const hasImplicitPreference = typeof mql.matches === 'boolean'
+/**
+ * Read the OS colour-scheme preference.
+ * Returns 'dark' or 'light' — never 'system'.
+ */
+export const getImplicitPreference = (): ResolvedTheme => {
+  if (typeof window === 'undefined') return 'light'
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+}
 
-  if (hasImplicitPreference) {
-    return mql.matches ? 'dark' : 'light'
-  }
-
-  return null
+/**
+ * Resolve the stored preference to an actual 'dark' | 'light' value
+ * that can be applied to data-theme.
+ */
+export const resolveTheme = (preference: Theme): ResolvedTheme => {
+  if (preference === 'system') return getImplicitPreference()
+  return preference
 }

@@ -1,57 +1,84 @@
 'use client'
 
-import React, { createContext, useCallback, use, useEffect, useState } from 'react'
-
-import type { Theme, ThemeContextType } from './types'
-
-import canUseDOM from '@/utilities/canUseDOM'
-import { defaultTheme, getImplicitPreference, themeLocalStorageKey } from './shared'
+import React, { createContext, use, useCallback, useEffect, useState } from 'react'
+import type { ResolvedTheme, Theme, ThemeContextType } from './types'
+import { defaultTheme, resolveTheme, themeLocalStorageKey } from './shared'
 import { themeIsValid } from './types'
 
-const initialContext: ThemeContextType = {
-  setTheme: () => null,
-  theme: undefined,
-}
+// ── Context ──────────────────────────────────────────────────────────────────
+const ThemeContext = createContext<ThemeContextType>({
+  setTheme:      () => null,
+  theme:         undefined,
+  resolvedTheme: undefined,
+})
 
-const ThemeContext = createContext(initialContext)
-
+// ── Provider ──────────────────────────────────────────────────────────────────
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const [theme, setThemeState] = useState<Theme | undefined>(
-    canUseDOM ? (document.documentElement.getAttribute('data-theme') as Theme) : undefined,
-  )
+  const [preference, setPreference] = useState<Theme | undefined>(undefined)
+  const [resolved,   setResolved]   = useState<ResolvedTheme | undefined>(undefined)
 
-  const setTheme = useCallback((themeToSet: Theme | null) => {
-    if (themeToSet === null) {
-      window.localStorage.removeItem(themeLocalStorageKey)
-      const implicitPreference = getImplicitPreference()
-      document.documentElement.setAttribute('data-theme', implicitPreference || '')
-      if (implicitPreference) setThemeState(implicitPreference)
-    } else {
-      setThemeState(themeToSet)
-      window.localStorage.setItem(themeLocalStorageKey, themeToSet)
-      document.documentElement.setAttribute('data-theme', themeToSet)
-    }
+  /** Write data-theme, update state, persist to localStorage, smooth transition. */
+  const applyTheme = useCallback((pref: Theme) => {
+    const res = resolveTheme(pref)
+    setPreference(pref)
+    setResolved(res)
+
+    // Add transition class before changing theme for smooth cross-fade
+    document.documentElement.classList.add('theme-transitioning')
+    document.documentElement.setAttribute('data-theme', res)
+
+    // Remove after transition completes (~350ms + buffer)
+    const tid = window.setTimeout(
+      () => document.documentElement.classList.remove('theme-transitioning'),
+      400,
+    )
+
+    try {
+      window.localStorage.setItem(themeLocalStorageKey, pref)
+    } catch (_) { /* storage blocked */ }
+
+    return () => window.clearTimeout(tid)
   }, [])
 
+  /**
+   * Public setter exposed via context.
+   * Accepts Theme ('light'|'dark'|'system') OR null (→ 'system') for
+   * backwards compatibility with the legacy ThemeSelector component.
+   */
+  const setTheme = useCallback((pref: Theme | null) => {
+    applyTheme(pref ?? 'system')
+  }, [applyTheme])
+
+  // ── Hydrate from localStorage on first render ─────────────────────────────
   useEffect(() => {
-    let themeToSet: Theme = defaultTheme
-    const preference = window.localStorage.getItem(themeLocalStorageKey)
+    let saved: string | null = null
+    try { saved = window.localStorage.getItem(themeLocalStorageKey) } catch (_) {}
+    const pref: Theme = themeIsValid(saved) ? (saved as Theme) : defaultTheme
+    applyTheme(pref)
+  }, [applyTheme])
 
-    if (themeIsValid(preference)) {
-      themeToSet = preference
-    } else {
-      const implicitPreference = getImplicitPreference()
-
-      if (implicitPreference) {
-        themeToSet = implicitPreference
+  // ── Live-listen to OS preference changes ──────────────────────────────────
+  useEffect(() => {
+    const mql = window.matchMedia('(prefers-color-scheme: dark)')
+    const handler = (e: MediaQueryListEvent) => {
+      let saved: string | null = null
+      try { saved = window.localStorage.getItem(themeLocalStorageKey) } catch (_) {}
+      // Only follow OS when user's preference is 'system' (or unset)
+      if (saved === 'system' || !themeIsValid(saved)) {
+        const res: ResolvedTheme = e.matches ? 'dark' : 'light'
+        setResolved(res)
+        document.documentElement.setAttribute('data-theme', res)
       }
     }
-
-    document.documentElement.setAttribute('data-theme', themeToSet)
-    setThemeState(themeToSet)
+    mql.addEventListener('change', handler)
+    return () => mql.removeEventListener('change', handler)
   }, [])
 
-  return <ThemeContext value={{ setTheme, theme }}>{children}</ThemeContext>
+  return (
+    <ThemeContext value={{ theme: preference, resolvedTheme: resolved, setTheme }}>
+      {children}
+    </ThemeContext>
+  )
 }
 
 export const useTheme = (): ThemeContextType => use(ThemeContext)

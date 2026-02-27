@@ -7,7 +7,7 @@ export const metadata: Metadata = {
   description: 'Explore our engineering programs and master the most in-demand tech skills.',
 }
 
-export default async function HomePage() {
+export default async function AcademyPage() {
   const [courses, tracks, testimonials, events, lecturers, settings] = await Promise.all([
     getCourses(),
     getTracks(),
