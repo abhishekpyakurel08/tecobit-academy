@@ -16,17 +16,17 @@ export const Header: GlobalConfig = {
         {
           name: 'email',
           type: 'text',
-          defaultValue: 'info@tecobit.academy',
+          defaultValue: 'info@tecobit.cloud',
         },
         {
           name: 'phone',
           type: 'text',
-          defaultValue: '+977 (01) 423-4567',
+          defaultValue: '+977 974-5697694',
         },
         {
           name: 'address',
           type: 'text',
-          defaultValue: 'Anamnagar-32, Kathmandu, Nepal',
+          defaultValue: 'Pragatinagar Marga, Sankhamul-31, Kathmandu, Nepal',
         },
       ],
     },

@@ -153,7 +153,7 @@ export function EventsClient({ events }: { events: any[] }) {
                   <MapPin className="h-12 w-12 text-white/40 mx-auto mb-6" />
                   <h3 className="text-2xl font-bold mb-2">Visit Our Hub</h3>
                   <p className="text-white/60 text-sm leading-relaxed">
-                    Anamnagar, Kathmandu<br />Nepal&apos;s epicenter for tech talent.
+                    Pragatinagar Marga, Sankhamul-31, Kathmandu<br />Nepal&apos;s epicenter for tech talent.
                   </p>
                   <hr className="border-white/10 my-6" />
                   <p className="text-[10px] font-black uppercase tracking-[0.4em] opacity-40">Open Mon–Fri · 9AM–6PM</p>

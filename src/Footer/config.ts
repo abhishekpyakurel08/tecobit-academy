@@ -19,19 +19,19 @@ export const Footer: GlobalConfig = {
       name: 'phone',
       type: 'text',
       required: true,
-      defaultValue: '+977 1234567890',
+      defaultValue: '+977 974-5697694',
     },
     {
       name: 'email',
       type: 'text',
       required: true,
-      defaultValue: 'info@tecobit.com',
+      defaultValue: 'info@tecobit.cloud',
     },
     {
       name: 'address',
       type: 'text',
       required: true,
-      defaultValue: 'Kathmandu, Nepal',
+      defaultValue: 'Pragatinagar Marga, Sankhamul-31, Kathmandu, Nepal',
     },
     {
       name: 'navItems',

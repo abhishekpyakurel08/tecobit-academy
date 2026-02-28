@@ -66,19 +66,19 @@ export function AcademyFooter({ data, settings, tracks }: AcademyFooterProps) {
                 <div className="h-10 w-10 rounded-xl bg-white/5 flex items-center justify-center group-hover:bg-white/10 transition-colors">
                   <Mail className="h-4 w-4 text-[#00f3ff]" />
                 </div>
-                <span className="group-hover:text-[#00f3ff] transition-colors">{data?.email || 'info@tecobit.academy'}</span>
+                <span className="group-hover:text-[#00f3ff] transition-colors">{data?.email || 'info@tecobit.cloud'}</span>
               </div>
               <div className="flex items-center gap-5 group">
                 <div className="h-10 w-10 rounded-xl bg-white/5 flex items-center justify-center group-hover:bg-white/10 transition-colors">
                   <Phone className="h-4 w-4 text-[#00f3ff]" />
                 </div>
-                <span className="group-hover:text-[#00f3ff] transition-colors">{data?.phone || '+977 (01) 4567-890'}</span>
+                <span className="group-hover:text-[#00f3ff] transition-colors">{data?.phone || '+977 974-5697694'}</span>
               </div>
               <div className="flex items-center gap-5 group">
                 <div className="h-10 w-10 rounded-xl bg-white/5 flex items-center justify-center group-hover:bg-white/10 transition-colors text-center">
                   <MapPin className="h-4 w-4 text-[#00f3ff]" />
                 </div>
-                <span className="leading-snug group-hover:text-[#00f3ff] transition-colors">{data?.address || 'Anamnagar-32, Kathmandu\nBagmati, Nepal'}</span>
+                <span className="leading-snug group-hover:text-[#00f3ff] transition-colors">{data?.address || 'Pragatinagar Marga, Sankhamul-31, Kathmandu, Nepal'}</span>
               </div>
               
               <CMSLink 

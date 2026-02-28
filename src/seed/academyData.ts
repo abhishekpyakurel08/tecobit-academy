@@ -383,9 +383,9 @@ export const seedAcademyData = async (payload: Payload): Promise<void> => {
       context: { disableRevalidate: true },
       data: {
         topBar: {
-          email: 'info@tecobit.academy',
-          phone: '+977 (01) 482-1234',
-          address: 'Anamnagar, Kathmandu, Nepal',
+          email: 'info@tecobit.cloud',
+          phone: '+977 974-5697694',
+          address: 'Pragatinagar Marga, Sankhamul-31, Kathmandu, Nepal',
         },
         navItems: [
           { link: { type: 'custom', url: '/', label: 'HOME' } },
@@ -404,9 +404,9 @@ export const seedAcademyData = async (payload: Payload): Promise<void> => {
       context: { disableRevalidate: true },
       data: {
         slogan: 'Empowering the next generation of tech leaders through industry-focused training in AI, Data Science, and Modern Engineering.',
-        email: 'info@tecobit.academy',
-        phone: '+977 (01) 482-1234',
-        address: 'Anamnagar-32, Kathmandu\nBagmati, Nepal',
+        email: 'info@tecobit.cloud',
+        phone: '+977 974-5697694',
+        address: 'Pragatinagar Marga, Sankhamul-31, Kathmandu, Nepal',
         admissionButton: {
           label: 'Online Admission',
           link: { type: 'custom', url: '/academy/apply', label: 'Apply Now' },

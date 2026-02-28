@@ -9,7 +9,7 @@ import React from 'react'
 import { AdminBar } from '@/components/AdminBar'
 import { AcademyNav } from '@/components/AcademyNav'
 import { AcademyFooter } from '@/components/AcademyFooter'
-import { CustomCursor } from '@/components/CustomCursor'
+
 import { Providers } from '@/providers'
 import { InitTheme } from '@/providers/Theme/InitTheme'
 import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
@@ -50,7 +50,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body>
         <Providers>
-          <CustomCursor />
+
           <AdminBar
             adminBarProps={{
               preview: isEnabled,

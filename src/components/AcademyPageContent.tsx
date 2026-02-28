@@ -281,17 +281,7 @@ export function AcademyPageContent({ courses, tracks, testimonials, events, lect
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Navigation */}
-      <nav className="bg-background border-b border-border">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2">
-              <GraduationCap className="h-6 w-6 text-primary" />
-              <span className="text-lg font-bold">Tecobit Academy</span>
-            </Link>
-          </div>
-        </div>
-      </nav>
+
 
       {/* Enhanced Hero Section */}
       <section className="relative gradient-primary text-primary-foreground py-20 md:py-32 overflow-hidden">
@@ -812,61 +802,7 @@ export function AcademyPageContent({ courses, tracks, testimonials, events, lect
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-card border-t border-border py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid gap-8 md:grid-cols-4">
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                <GraduationCap className="h-6 w-6 text-primary" />
-                <h3 className="text-lg font-bold">Tecobit Academy</h3>
-              </div>
-              <p className="text-sm text-muted-foreground mb-4">
-                Empowering the next generation of tech leaders with world-class education.
-              </p>
-              <div className="flex gap-4 text-sm text-muted-foreground">
-                <span className="flex items-center gap-1">
-                  <Globe className="h-4 w-4" />
-                  +977 1234567890
-                </span>
-              </div>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Quick Links</h4>
-              <div className="space-y-2">
-                <Link href="/academy/courses" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">Courses</Link>
-                <Link href="/academy/events" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">Events</Link>
-                <Link href="/academy/testimonials" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">Testimonials</Link>
-                <Link href="/academy/apply" className="block text-sm text-muted-foreground hover:text-foreground transition-colors">Apply</Link>
-              </div>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Contact Us</h4>
-              <div className="space-y-2 text-sm text-muted-foreground">
-                <p className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4" />
-                  Kathmandu, Nepal
-                </p>
-                <p className="flex items-center gap-2">
-                  <Globe className="h-4 w-4" />
-                  +977 1234567890
-                </p>
-                <p>info@tecobit.com</p>
-              </div>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Join Monthly News</h4>
-              <div className="flex gap-2">
-                <Input placeholder="Your email" className="flex-1" />
-                <Button>Subscribe</Button>
-              </div>
-            </div>
-          </div>
-          <div className="mt-8 pt-8 border-t border-border text-center text-sm text-muted-foreground">
-            <p>&copy; 2024 Tecobit Academy. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+
     </div>
   )
 }

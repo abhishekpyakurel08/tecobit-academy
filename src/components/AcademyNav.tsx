@@ -113,15 +113,15 @@ export function AcademyNav({ data, settings }: AcademyNavProps) {
             <div className="flex items-center gap-6">
               <div className="flex items-center gap-2">
                 <Mail className="h-3.5 w-3.5 border border-white/20 p-0.5 rounded-sm" />
-                <span>{topBar?.email || 'info@tecobit.academy'}</span>
+                <span>{topBar?.email || 'info@tecobit.cloud'}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="h-3.5 w-3.5 border border-white/20 p-0.5 rounded-sm" />
-                <span>{topBar?.phone || '+977 (01) 423-4567'}</span>
+                <span>{topBar?.phone || '+977 974-5697694'}</span>
               </div>
               <div className="flex items-center gap-2">
                 <MapPin className="h-3.5 w-3.5 border border-white/20 p-0.5 rounded-sm" />
-                <span>{topBar?.address || 'Kathmandu, Nepal'}</span>
+                <span>{topBar?.address || 'Pragatinagar Marga, Sankhamul-31, Kathmandu, Nepal'}</span>
               </div>
             </div>
             <div className="flex items-center gap-4">

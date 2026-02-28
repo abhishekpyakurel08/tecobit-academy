@@ -266,32 +266,13 @@
   @media (min-width: 64rem)  { body { font-size: var(--font-lg); } }
 
   /* ── Theme-change transitions ─────────────────────────────────────── */
-  /* Only colour properties — exclude transform/opacity so animations aren't
-     accidentally slowed down by the blanket rule. */
-  * {
-    transition-property: background-color, border-color, color, fill, stroke, box-shadow;
-    transition-duration: 0.25s;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  /* Components that need faster transitions can override with Tailwind classes */
-  a, button, [role="button"] {
-    transition-duration: 0.15s;
-  }
+  /* The global color cross-fade is now exclusively handled by .theme-transitioning
+     during actual theme swaps to prevent sluggish hover states globally.
+     Individual interactive elements (like buttons) handle their own hover 
+     transitions via Tailwind utilities. */
 
-  /* ── Custom cursor – hide OS cursor on fine-pointer (mouse) devices ── */
-  @media (pointer: fine) {
-    html, body {
-      cursor: none !important;
-    }
-    a, button, label, select, input[type="submit"],
-    input[type="button"], input[type="reset"],
-    [role="button"], [role="link"], [role="tab"],
-    [role="menuitem"], [role="option"],
-    [tabindex]:not([tabindex="-1"]),
-    .cursor-pointer {
-      cursor: none !important;
-    }
-  }
+
+
 }
 
 /* ── FOUC guard ──────────────────────────────────────────────────────────────

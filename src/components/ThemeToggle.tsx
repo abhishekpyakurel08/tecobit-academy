@@ -42,7 +42,7 @@ export const ThemeToggle = ({ className = '' }: { className?: string }) => {
   }, [isOpen])
 
   if (!mounted) {
-    return <div className="h-11 w-11 rounded-xl bg-white/5 border border-white/5 animate-pulse" />
+    return <div className="h-11 w-11 rounded-xl bg-secondary/50 border border-border/50 animate-pulse" />
   }
 
   return (
@@ -57,9 +57,9 @@ export const ThemeToggle = ({ className = '' }: { className?: string }) => {
         onClick={() => setIsOpen(prev => !prev)}
         className={[
           'h-11 w-11 p-0 rounded-xl',
-          'bg-white/5 hover:bg-white/15',
-          'border border-white/10',
-          'text-white',
+          'bg-accent/10 hover:bg-accent/20 dark:bg-white/5 dark:hover:bg-white/15',
+          'border border-border/50 dark:border-white/10',
+          'text-foreground',
           'transition-all duration-300',
           className,
         ].join(' ')}
@@ -67,7 +67,7 @@ export const ThemeToggle = ({ className = '' }: { className?: string }) => {
         <div className="relative h-5 w-5 flex items-center justify-center">
           <Sun
             className={[
-              'absolute h-5 w-5 transition-all duration-500',
+              'absolute h-5 w-5 transition-all duration-500 text-foreground',
               resolvedTheme === 'dark'
                 ? 'opacity-0 scale-50 rotate-90'
                 : 'opacity-100 scale-100 rotate-0',
@@ -75,7 +75,7 @@ export const ThemeToggle = ({ className = '' }: { className?: string }) => {
           />
           <Moon
             className={[
-              'absolute h-5 w-5 transition-all duration-500',
+              'absolute h-5 w-5 transition-all duration-500 text-foreground',
               resolvedTheme === 'dark'
                 ? 'opacity-100 scale-100 rotate-0'
                 : 'opacity-0 scale-50 -rotate-90',
@@ -90,9 +90,9 @@ export const ThemeToggle = ({ className = '' }: { className?: string }) => {
         aria-label="Theme options"
         className={[
           'absolute right-0 mt-3 w-44 p-2',
-          'rounded-2xl shadow-2xl',
-          'bg-[#0c0c0f]/95 backdrop-blur-2xl',
-          'border border-white/10',
+          'rounded-2xl shadow-theme-lg',
+          'bg-background/95 backdrop-blur-2xl',
+          'border border-border/50 dark:border-white/10',
           'z-[10000]',
           'transition-all duration-200 origin-top-right',
           isOpen
@@ -117,14 +117,14 @@ export const ThemeToggle = ({ className = '' }: { className?: string }) => {
                 'text-sm font-black uppercase tracking-widest',
                 'transition-all duration-200',
                 isSelected
-                  ? 'bg-[#5173ff] text-white shadow-lg shadow-[#5173ff]/30'
-                  : 'text-white/50 hover:bg-white/8 hover:text-white',
+                  ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/30'
+                  : 'text-muted-foreground hover:bg-secondary/50 hover:text-foreground',
               ].join(' ')}
             >
               <Icon className="h-4 w-4 shrink-0" />
               <span>{label}</span>
               {isSelected && (
-                <span className="ml-auto h-1.5 w-1.5 rounded-full bg-white opacity-70" />
+                <span className="ml-auto h-1.5 w-1.5 rounded-full bg-current opacity-70" />
               )}
             </button>
           )
@@ -132,8 +132,8 @@ export const ThemeToggle = ({ className = '' }: { className?: string }) => {
 
         {/* ── Resolved hint ──────────────────────────────────────────── */}
         {theme === 'system' && (
-          <div className="mt-2 pt-2 border-t border-white/5 px-4 pb-1">
-            <p className="text-[9px] font-black uppercase tracking-[0.2em] text-white/25">
+          <div className="mt-2 pt-2 border-t border-border/50 dark:border-white/5 px-4 pb-1">
+            <p className="text-[9px] font-black uppercase tracking-[0.2em] text-muted-foreground">
               Currently: {resolvedTheme}
             </p>
           </div>
